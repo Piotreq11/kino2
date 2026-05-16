@@ -19,6 +19,7 @@
                 <span th:text="${film.tytul}"></span> -
                 <span th:text="${film.director.imieNazwisko}"></span> -
                 <span th:text="${film.czasTrwania}"></span> min
+                <a th:href="@{/edit/{id}(id=${film.id})}">Edytuj</a>
                     <form th:action="@{/delete/{id}(id=${film.id})}" method="post" style="display:inline;">
                         <button type="submit">Usuń</button> </form>
             </li>
