@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="PL_pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kino</title>
+</head>
+<body>
+    
+    <div id="listafilmow">
+        <h1>Lista filmów:</h1>
+        <ul>
+            <li th:each="film : ${movies}">
+                <span th:text="${film.tytul}"></span> -
+                <span th:text="${film.rezyser}"></span> -
+                <span th:text="${film.czasTrwania}"></span> min
+                    <form th:action="@{/delete/{id}(id=${film.id})}" method="post" style="display:inline;">
+                        <button type="submit">Usuń</button>
+            </li>
+        </ul>
+    </div>
+    <div id="dodajfilm">
+        <form action="/add" method="post">
+            Tytuł: <input type="text" name="tytul" id="tytul"> <br>
+            Reżyser: <input type="text" name="rezyser" id="rezyser"> <br>
+            Czas trwania: <input type="number" name="czasTrwania" id="czasTrwania"> <br>
+            <button>Dodaj film</button>
+        </form>
+    </div>
+</body>
+</html>
