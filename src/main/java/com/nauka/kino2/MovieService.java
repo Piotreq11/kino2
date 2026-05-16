@@ -8,25 +8,34 @@ import java.util.List;
 public class MovieService {
 
     private final MovieRepository movieRepository;
+    private final DirectorRepository directorRepository;
 
-    public MovieService(MovieRepository movieRepository){
-        this.movieRepository=movieRepository;
+    public MovieService(MovieRepository movieRepository, DirectorRepository directorRepository) {
+        this.movieRepository = movieRepository;
+        this.directorRepository = directorRepository;
     }
 
-    public List<Movie> getAllMovies(){
+    public List<Movie> getAllMovies() {
         return movieRepository.findAll();
     }
 
-    public void addMovie(Movie movie){
+    public void addMovieWithDirector(String tytul, String imieNazwiskoRezysera, int czasTrwania){
+        Director director = directorRepository.findByImieNazwisko(imieNazwiskoRezysera).orElseGet( ()-> directorRepository.save(new Director(imieNazwiskoRezysera)));
+
+        Movie newMovie = new Movie(tytul,director,czasTrwania);
+        movieRepository.save(newMovie);
+    }
+
+    public void addMovie(Movie movie) {
         movieRepository.save(movie);
     }
 
-    public void deleteMovie(Long id){
+    public void deleteMovie(Long id) {
         movieRepository.deleteById(id);
     }
 
-    public List<Movie> searchMoviesByTytul(String fraza){
-        if(fraza==null || fraza.trim().isEmpty())
+    public List<Movie> searchMoviesByTytul(String fraza) {
+        if (fraza == null || fraza.trim().isEmpty())
             return movieRepository.findAll();
         return movieRepository.findByTytulContainingIgnoreCase(fraza);
     }

@@ -17,7 +17,7 @@
         <ul>
             <li th:each="film : ${movies}">
                 <span th:text="${film.tytul}"></span> -
-                <span th:text="${film.rezyser}"></span> -
+                <span th:text="${film.director.imieNazwisko}"></span> -
                 <span th:text="${film.czasTrwania}"></span> min
                     <form th:action="@{/delete/{id}(id=${film.id})}" method="post" style="display:inline;">
                         <button type="submit">Usuń</button> </form>
