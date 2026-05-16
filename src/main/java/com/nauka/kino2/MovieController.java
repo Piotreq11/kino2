@@ -17,8 +17,9 @@ public class MovieController {
     }
 
     @GetMapping("/")
-    public String index(Model model) {
-        model.addAttribute("movies", movieService.getAllMovies());
+    public String index(Model model, @RequestParam(required = false) String szukaj) {
+        model.addAttribute("movies", movieService.searchMoviesByTytul(szukaj));
+        model.addAttribute("ostatnioSzukane", szukaj);
         return "index";
     }
 
@@ -30,7 +31,7 @@ public class MovieController {
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteMovie(@PathVariable Long id){
+    public String deleteMovie(@PathVariable Long id) {
         movieService.deleteMovie(id);
         return "redirect:/";
     }

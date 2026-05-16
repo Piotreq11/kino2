@@ -24,4 +24,10 @@ public class MovieService {
     public void deleteMovie(Long id){
         movieRepository.deleteById(id);
     }
+
+    public List<Movie> searchMoviesByTytul(String fraza){
+        if(fraza==null || fraza.trim().isEmpty())
+            return movieRepository.findAll();
+        return movieRepository.findByTytulContainingIgnoreCase(fraza);
+    }
 }

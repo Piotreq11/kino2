@@ -6,7 +6,12 @@
     <title>Kino</title>
 </head>
 <body>
-    
+    <div id="wyszukiwarka">
+        <form action="/" method="get">
+            <input type="text" name="szukaj" th:value="${ostatnioSzukane}" placeholder="Szukaj filmu...">
+            <button type="submit">Szukaj</button>
+        </form>
+    </div>
     <div id="listafilmow">
         <h1>Lista filmów:</h1>
         <ul>
@@ -15,7 +20,7 @@
                 <span th:text="${film.rezyser}"></span> -
                 <span th:text="${film.czasTrwania}"></span> min
                     <form th:action="@{/delete/{id}(id=${film.id})}" method="post" style="display:inline;">
-                        <button type="submit">Usuń</button>
+                        <button type="submit">Usuń</button> </form>
             </li>
         </ul>
     </div>
