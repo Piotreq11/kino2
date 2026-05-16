@@ -24,7 +24,7 @@ public class MovieController {
     }
 
     @PostMapping("/add")
-    public String addMovie(@RequestParam String tytul, @RequestParam String rezyser, @RequestParam int czasTrwania) {
+    public String addMovie(@RequestParam String tytul, @RequestParam Director rezyser, @RequestParam int czasTrwania) {
         Movie newMovie = new Movie(tytul, rezyser, czasTrwania);
         movieService.addMovie(newMovie);
         return "redirect:/";

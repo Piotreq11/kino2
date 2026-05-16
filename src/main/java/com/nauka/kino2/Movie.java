@@ -10,15 +10,19 @@ public class Movie {
     private Long id;
 
     private String tytul;
-    private String rezyser;
+
+    @ManyToOne
+    @JoinColumn(name = "director_id")
+    private Director director;
+
     private int czasTrwania;
 
     public Movie() {
     }
 
-    public Movie(String tytul, String rezyser, int czasTrwania) {
+    public Movie(String tytul, Director director, int czasTrwania) {
         this.tytul = tytul;
-        this.rezyser = rezyser;
+        this.director=director;
         this.czasTrwania = czasTrwania;
     }
 
@@ -38,12 +42,12 @@ public class Movie {
         this.czasTrwania = czasTrwania;
     }
 
-    public String getRezyser() {
-        return rezyser;
+    public Director getDirector() {
+        return director;
     }
 
-    public void setRezyser(String rezyser) {
-        this.rezyser = rezyser;
+    public void setDirector(Director director) {
+        this.director = director;
     }
 
     public String getTytul() {
