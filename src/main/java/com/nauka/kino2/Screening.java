@@ -17,6 +17,8 @@ public class Screening {
 
     private LocalDateTime dataIGodzina;
 
+    private double cenaBiletu;
+
     @ManyToOne
     @JoinColumn(name = "movie_id")
     private Movie movie;
@@ -27,14 +29,27 @@ public class Screening {
     public Screening() {
     }
 
-    public Screening(int numerSali, LocalDateTime dataIGodzina, Movie movie) {
+    public Screening(int numerSali, LocalDateTime dataIGodzina, Movie movie,double cenaBiletu) {
         this.numerSali = numerSali;
         this.dataIGodzina = dataIGodzina;
         this.movie = movie;
+        this.cenaBiletu=cenaBiletu;
+    }
+
+    public double getCalkowityZarobek(){
+        return getZajeteMiejsca()*this.cenaBiletu;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public double getCenaBiletu() {
+        return cenaBiletu;
+    }
+
+    public void setCenaBiletu(double cenaBiletu) {
+        this.cenaBiletu = cenaBiletu;
     }
 
     public void setId(Long id) {

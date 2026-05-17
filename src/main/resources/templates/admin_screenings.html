@@ -16,6 +16,7 @@
                     th:value="${film.id}"
                     th:text="${film.tytul}"></option>
         </select> <br>
+        Cena biletu (zł): <input type="number" step="0.01" name="cenaBiletu" required placeholder="25.00"> <br>
         <button type="submit">Dodaj seans</button>
     </form>
 
@@ -48,6 +49,11 @@
           style="font-weight: bold; color: red; margin-left: 10px;">
         [ WYPRZEDANE ]
     </span>
+    <!-- Wklej to wewnątrz pętli wyświetlania seansów w admin_screenings.html -->
+<div style="margin-top: 5px; color: #2e7d32; font-weight: bold;">
+    Cena biletu: <span th:text="${screening.cenaBiletu}"></span> zł | 
+    Łączny przychód: <span th:text="${screening.calkowityZarobek}"></span> zł
+</div>
 </div>
 
                 <!-- Akcje managera (Usuń / Edytuj) -->

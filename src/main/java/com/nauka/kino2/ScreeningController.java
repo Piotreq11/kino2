@@ -44,10 +44,10 @@ public class ScreeningController {
     //dodawanie seansu przez admina
 
     @PostMapping("/admin/seanse/add")
-    public String addScreening(@RequestParam int numerSali, @RequestParam String dataGodzinaStr, @RequestParam Long movieId) {
+    public String addScreening(@RequestParam int numerSali, @RequestParam String dataGodzinaStr, @RequestParam Long movieId, @RequestParam double cenaBiletu) {
         Movie movie = movieService.getMovieById(movieId);
         LocalDateTime dataIGodzina = LocalDateTime.parse(dataGodzinaStr);
-        Screening screening = new Screening(numerSali, dataIGodzina, movie);
+        Screening screening = new Screening(numerSali, dataIGodzina, movie, cenaBiletu);
         screeningService.addScreening(screening);
         return "redirect:/admin/seanse";
     }
@@ -73,13 +73,14 @@ public class ScreeningController {
     //zapisanie zmian po edycji
 
     @PostMapping("/admin/seanse/edit/{id}")
-    public String updateScreening(@PathVariable Long id, @RequestParam int numerSali, @RequestParam String dataGodzinaStr, @RequestParam Long movieId) {
+    public String updateScreening(@PathVariable Long id, @RequestParam int numerSali, @RequestParam String dataGodzinaStr, @RequestParam Long movieId, @RequestParam double cenaBiletu) {
         Screening screening = screeningService.getScreeningById(id);
         Movie movie = movieService.getMovieById(movieId);
 
         screening.setNumerSali(numerSali);
         screening.setDataIGodzina(LocalDateTime.parse(dataGodzinaStr));
         screening.setMovie(movie);
+        screening.setCenaBiletu(cenaBiletu);
 
         screeningService.saveScreening(screening);
         return "redirect:/admin/seanse";
