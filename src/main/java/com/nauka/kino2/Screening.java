@@ -64,4 +64,12 @@ public class Screening {
     public void setMovie(Movie movie) {
         this.movie = movie;
     }
+
+    public List<Ticket> getBilety(){
+        return bilety;
+    }
+
+    public void setBilety(List<Ticket> bilety){
+        this.bilety=bilety;
+    }
 }

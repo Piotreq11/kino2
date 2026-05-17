@@ -12,6 +12,10 @@ public class TicketService {
     }
 
     public void buyTicket(Ticket ticket){
+        boolean czyZajete = ticketRepository.findByScreeningIdAndNumerMiejsca((ticket.getScreening().getId()), ticket.getNumerMiejsca()).isPresent();
+        if(czyZajete)
+            throw new IllegalStateException("To miejsce jest już zarezerwowane na ten seans!");
+
         ticketRepository.save(ticket);
     }
 }

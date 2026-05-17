@@ -25,15 +25,21 @@ public class TicketController {
     }
 
     @PostMapping("/kup")
-    public String buyTicket(@RequestParam String imieNazwisko, @RequestParam int numerMiejsca, @RequestParam Long screeningId){
+    public String buyTicket(@RequestParam String imieNazwisko, @RequestParam int numerMiejsca, @RequestParam Long screeningId, Model model){
 
         Screening screening = screeningService.getScreeningById(screeningId);
 
-        Ticket newTicket = new Ticket(imieNazwisko, numerMiejsca, screening);
+        try {
+            Ticket newTicket = new Ticket(imieNazwisko, numerMiejsca, screening);
+            ticketService.buyTicket(newTicket); // Tutaj może wyskoczyć błąd
+            return "redirect:/seanse";
 
-        ticketService.buyTicket(newTicket);
-
-        return "redirect:/seanse";
+        } catch (IllegalStateException e) {
+            // Jeśli złapiemy błąd z serwisu, wracamy do formularza i przekazujemy komunikat
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("screening", screening); // Musimy ponownie przekazać dane seansu
+            return "buy_ticket";
+        }
 
     }
 }

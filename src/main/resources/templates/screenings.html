@@ -7,10 +7,9 @@
 </head>
 <body>
 
-    <!-- TUTAJ: Zmiana adresu action na /seanse/add -->
     <form action="/seanse/add" method="post">
         Numer sali: <input type="number" name="numerSali" id="numerSali" required> <br>
-        Data i godzina: <input type="datetime-local" name="dataIGodzinaStr" required> <br>
+        Data i godzina: <input type="datetime-local" name="dataGodzinaStr" required> <br>
         Film: 
         <select name="movieId" required>
             <option th:each="film : ${movies}"
@@ -23,19 +22,40 @@
     <div id="seanse">
         <h2>Seansy:</h2>
         <ul>
-            <li th:each="screening : ${screenings}">
-                Sala: <span th:text="${screening.numerSali}"></span> -
-                <!-- Zmiana na dataIGodzina (tak jak w encji Screening.java) -->
-                Data: <span th:text="${#temporals.format(screening.dataIGodzina, 'dd.MM.yyyy HH:mm')}"></span> -
-                Film: <span th:text="${screening.movie.tytul}"></span>
-                <form th:action="@{/seanse/delete/{id}(id=${screening.id})}" method="post" style="display:inline;">
+            <li th:each="screening : ${screenings}" style="margin-bottom: 20px;">
+                <!-- Główne informacje o seansie -->
+                <div>
+                    Sala: <span th:text="${screening.numerSali}"></span> -
+                    Data: <span th:text="${#temporals.format(screening.dataIGodzina, 'dd.MM.yyyy HH:mm')}"></span> -
+                    Film: <strong th:text="${screening.movie.tytul}"></strong>
+                    
+                    <!-- Link do kupna biletu -->
                     <a th:href="@{/bilety/kup/{id}(id=${screening.id})}" style="font-weight: bold; color: green; margin-left: 10px;">
                         [ Kup bilet ]
                     </a>
-    <button type="submit">Usuń</button>
-</form>
+                </div>
 
-<a th:href="@{/seanse/edit/{id}(id=${screening.id})}">Edytuj seans</a>
+                <!-- Akcje managera (Usuń / Edytuj) -->
+                <div style="margin-top: 5px;">
+                    <form th:action="@{/seanse/delete/{id}(id=${screening.id})}" method="post" style="display:inline;">
+                        <button type="submit">Usuń seans</button>
+                    </form>
+                    <a th:href="@{/seanse/edit/{id}(id=${screening.id})}" style="margin-left: 10px;">Edytuj seans</a>
+                </div>
+
+                <!-- Podgląd kupionych biletów -->
+                <div style="margin-top: 10px; margin-left: 20px; font-size: 0.9em; color: #555;">
+                    <strong>Sprzedane bilety:</strong>
+                    <span th:if="${screening.bilety.isEmpty()}">Brak sprzedanych biletów.</span>
+
+                    <ul th:if="${!screening.bilety.isEmpty()}">
+                        <li th:each="bilet : ${screening.bilety}">
+                            Miejsce <span th:text="${bilet.numerMiejsca}"></span>:
+                            <span th:text="${bilet.imieNazwiskoKlienta}"></span>
+                        </li>
+                    </ul>
+                </div>
+                <hr>
             </li>
         </ul>
     </div>

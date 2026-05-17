@@ -17,6 +17,10 @@
     <hr>
 
     <h2>Dane rezerwacji:</h2>
+    <!-- Komunikat wyświetli się TYLKO wtedy, gdy w modelu pojawi się zmienna 'error' -->
+<div th:if="${error}" style="color: red; font-weight: bold; margin-bottom: 15px; padding: 10px; border: 1px solid red; background-color: #fee;">
+    Błąd: <span th:text="${error}"></span>
+</div>
     <form action="/bilety/kup" method="post">
         <!-- Ukryte pole przesyłające ID seansu, żeby Spring wiedział do czego przypisać bilet -->
         <input type="hidden" name="screeningId" th:value="${screening.id}">
