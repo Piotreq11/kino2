@@ -28,6 +28,11 @@
                 <!-- Zmiana na dataIGodzina (tak jak w encji Screening.java) -->
                 Data: <span th:text="${#temporals.format(screening.dataIGodzina, 'dd.MM.yyyy HH:mm')}"></span> -
                 Film: <span th:text="${screening.movie.tytul}"></span>
+                <form th:action="@{/seanse/delete/{id}(id=${screening.id})}" method="post" style="display:inline;">
+    <button type="submit">Usuń</button>
+</form>
+
+<a th:href="@{/seanse/edit/{id}(id=${screening.id})}">Edytuj seans</a>
             </li>
         </ul>
     </div>

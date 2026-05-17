@@ -20,4 +20,16 @@ public class ScreeningService {
     public void addScreening(Screening screening){
         screeningRepository.save(screening);
     }
+
+    public Screening getScreeningById(Long id){
+        return screeningRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Nie znaleziono seansu o ID: "+ id));
+    }
+
+    public void saveScreening(Screening screening){
+        screeningRepository.save(screening);
+    }
+
+    public void deleteScreening(Long id){
+        screeningRepository.deleteById(id);
+    }
 }
