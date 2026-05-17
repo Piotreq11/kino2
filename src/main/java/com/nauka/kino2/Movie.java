@@ -2,6 +2,9 @@ package com.nauka.kino2;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "movies")
 public class Movie {
@@ -16,6 +19,9 @@ public class Movie {
     private Director director;
 
     private int czasTrwania;
+
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
+    private List<Screening> seanse = new ArrayList<>();
 
     public Movie() {
     }
