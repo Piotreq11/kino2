@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 
 @Controller
-//@RequestMapping("/seanse")
 public class ScreeningController {
 
     private final ScreeningService screeningService;
@@ -44,9 +43,18 @@ public class ScreeningController {
     //dodawanie seansu przez admina
 
     @PostMapping("/admin/seanse/add")
-    public String addScreening(@RequestParam int numerSali, @RequestParam String dataGodzinaStr, @RequestParam Long movieId, @RequestParam double cenaBiletu) {
-        Movie movie = movieService.getMovieById(movieId);
+    public String addScreening(@RequestParam int numerSali, @RequestParam String dataGodzinaStr, @RequestParam Long movieId, @RequestParam double cenaBiletu, Model model) {
         LocalDateTime dataIGodzina = LocalDateTime.parse(dataGodzinaStr);
+
+        if (dataIGodzina.isBefore(LocalDateTime.now())) {
+            model.addAttribute("error", "Nie można dodać seansu z datą wsteczną!");
+            model.addAttribute("screening", screeningService.getAllScreenings());
+            model.addAttribute("movies", movieService.getAllMovies());
+            return "admin_screenings";
+        }
+
+        Movie movie = movieService.getMovieById(movieId);
+
         Screening screening = new Screening(numerSali, dataIGodzina, movie, cenaBiletu);
         screeningService.addScreening(screening);
         return "redirect:/admin/seanse";
@@ -86,11 +94,11 @@ public class ScreeningController {
         return "redirect:/admin/seanse";
     }
 
-    @GetMapping
+    /*@GetMapping
     public String index(Model model) {
         model.addAttribute("screenings", screeningService.getAllScreenings());
         model.addAttribute("movies", movieService.getAllMovies());
         return "screenings";
-    }
+    }*/
 
 }
