@@ -29,6 +29,9 @@
                 Data: <span th:text="${#temporals.format(screening.dataIGodzina, 'dd.MM.yyyy HH:mm')}"></span> -
                 Film: <span th:text="${screening.movie.tytul}"></span>
                 <form th:action="@{/seanse/delete/{id}(id=${screening.id})}" method="post" style="display:inline;">
+                    <a th:href="@{/bilety/kup/{id}(id=${screening.id})}" style="font-weight: bold; color: green; margin-left: 10px;">
+                        [ Kup bilet ]
+                    </a>
     <button type="submit">Usuń</button>
 </form>
 

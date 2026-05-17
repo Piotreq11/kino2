@@ -3,6 +3,8 @@ package com.nauka.kino2;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "screenings")
@@ -18,6 +20,9 @@ public class Screening {
     @ManyToOne
     @JoinColumn(name = "movie_id")
     private Movie movie;
+
+    @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL)
+    private List<Ticket> bilety = new ArrayList<>();
 
     public Screening() {
     }

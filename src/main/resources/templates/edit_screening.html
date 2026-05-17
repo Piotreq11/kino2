@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="PL_pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edycja Seansu</title>
+</head>
+<body>
+<h1>Edycja seansu</h1>
+
+<form th:action="@{/seanse/edit/{id}(id=${screening.id})}" method="post">
+    Numer sali:
+    <input type="number" name="numerSali" th:value="${screening.numerSali}" required> <br>
+
+    Data i godzina:
+    <input type="datetime-local" name="dataGodzinaStr" th:value="${screening.dataIGodzina}" required> <br>
+
+    Film:
+    <select name="movieId" required>
+        <option th:each="film : ${movies}"
+                th:value="${film.id}"
+                th:text="${film.tytul}"
+                th:selected="${film.id == screening.movie.id}"></option>
+    </select> <br>
+
+    <button type="submit">Zapisz zmiany</button>
+</form>
+
+<br>
+<a href="/seanse">Anuluj i wróć</a>
+</body>
+</html>

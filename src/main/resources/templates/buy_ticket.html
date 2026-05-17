@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="PL_pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Kup bilet</title>
+</head>
+<body>
+    <h1>Kupujesz bilet na seans:</h1>
+    
+    <div>
+        <h3>Film: <span th:text="${screening.movie.tytul}"></span></h3>
+        <p>Reżyser: <span th:text="${screening.movie.director.imieNazwisko}"></span></p>
+        <p>Sala: <span th:text="${screening.numerSali}"></span></p>
+        <p>Data i godzina: <span th:text="${screening.dataIGodzina}"></span></p>
+    </div>
+
+    <hr>
+
+    <h2>Dane rezerwacji:</h2>
+    <form action="/bilety/kup" method="post">
+        <!-- Ukryte pole przesyłające ID seansu, żeby Spring wiedział do czego przypisać bilet -->
+        <input type="hidden" name="screeningId" th:value="${screening.id}">
+
+        Imię i Nazwisko: 
+        <input type="text" name="imieNazwisko" required placeholder="Jan Kowalski"> <br><br>
+        
+        Numer miejsca (1-100): 
+        <input type="number" name="numerMiejsca" min="1" max="100" required> <br><br>
+
+        <button type="submit" style="background-color: green; color: white; padding: 10px;">
+            Potwierdzam zakup biletów
+        </button>
+    </form>
+
+    <br>
+    <a href="/seanse">Anuluj i wróć</a>
+</body>
+</html>
