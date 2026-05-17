@@ -2,51 +2,69 @@
 <html lang="PL_pl" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kup bilet</title>
+    <!-- Poprawna ścieżka DRY do CSS -->
+    <link rel="stylesheet" th:href="@{/style.css}">
 </head>
 <body>
-    <h1>Kupujesz bilet na seans:</h1>
+
+    <h1>Podsumowanie Wybranego Seansu</h1>
+    <p>Sprawdź szczegóły filmu przed dokonaniem rezerwacji miejsca.</p>
     
-    <div>
-        <h3>Film: <span th:text="${screening.movie.tytul}"></span></h3>
-        <p>Reżyser: <span th:text="${screening.movie.director.imieNazwisko}"></span></p>
-        <p>Sala: <span th:text="${screening.numerSali}"></span></p>
-        <p>Data i godzina: <span th:text="${screening.dataIGodzina}"></span></p>
+    <!-- Wizytówka seansu -->
+    <div class="container" style="margin-bottom: 25px; border-left: 5px solid #2ecc71;">
+        <h3 style="margin-top: 0; font-size: 1.5em; color: #2c3e50;">
+            Film: <span th:text="${screening.movie.tytul}"></span>
+        </h3>
+        <p style="text-align: left; margin: 5px 0;">🎬 Reżyser: <strong th:text="${screening.movie.director.imieNazwisko}"></strong></p>
+        <p style="text-align: left; margin: 5px 0;">🚪 Sala kinowa: <strong th:text="${screening.numerSali}"></strong></p>
+        <p style="text-align: left; margin: 5px 0;">📅 Data i godzina: <strong th:text="${#temporals.format(screening.dataIGodzina, 'dd.MM.yyyy HH:mm')}"></strong></p>
     </div>
 
-    <hr>
+    <!-- Komunikat o błędzie (np. zajęte miejsce) podpięty pod styl z arkusza -->
+    <div th:if="${error}" class="error-box">
+        ⚠️ <span th:text="${error}"></span>
+    </div>
 
-    <h2>Dane rezerwacji:</h2>
-    <!-- Komunikat wyświetli się TYLKO wtedy, gdy w modelu pojawi się zmienna 'error' -->
-<div th:if="${error}" style="color: red; font-weight: bold; margin-bottom: 15px; padding: 10px; border: 1px solid red; background-color: #fee;">
-    Błąd: <span th:text="${error}"></span>
-</div>
-    <form action="/bilety/kup" method="post">
-        <!-- Ukryte pole przesyłające ID seansu, żeby Spring wiedział do czego przypisać bilet -->
-        <input type="hidden" name="screeningId" th:value="${screening.id}">
-
-        Imię i Nazwisko: 
-        <input type="text" name="imieNazwisko" required placeholder="Jan Kowalski"> <br><br>
-
-        <!-- Zmień wyświetlanie ceny seansu na formatowane: -->
-<p>Cena bazowa: <strong><span th:text="${#numbers.formatDecimal(screening.cenaBiletu, 1, 2, 'COMMA')}"></span> zł</strong> (Ulgowy -20%)</p>
-
-<!-- Wewnątrz formularza <form> dodaj select z wyborem typu biletu: -->
-Rodzaj biletu:
-<select name="typBiletu" required>
-    <option value="NORMALNY">Normalny (100% ceny)</option>
-    <option value="ULGOWY">Ulgowy (-20% zniżki)</option>
-</select> <br><br>
+    <!-- Formularz zakupu biletów -->
+    <div class="container">
+        <h2>Dane do rezerwacji</h2>
         
-        Numer miejsca (1-100): 
-        <input type="number" name="numerMiejsca" min="1" max="100" required> <br><br>
+        <form action="/bilety/kup" method="post">
+            <!-- Ukryte pole przesyłające ID seansu -->
+            <input type="hidden" name="screeningId" th:value="${screening.id}">
 
-        <button type="submit" style="background-color: green; color: white; padding: 10px;">
-            Potwierdzam zakup biletów
-        </button>
-    </form>
+            <div>
+                <label>Imię i Nazwisko widza:</label>
+                <input type="text" name="imieNazwisko" required placeholder="np. Jan Kowalski">
+            </div>
 
-    <br>
-    <a href="/repertuar">Anuluj i wróć</a>
+            <div>
+                <label>Rodzaj biletu:</label>
+                <select name="typBiletu" required>
+                    <option value="NORMALNY">Normalny (100% ceny)</option>
+                    <option value="ULGOWY">Ulgowy (-20% zniżki dla studentów/uczniów)</option>
+                </select>
+            </div>
+            
+            <div>
+                <label>Numer miejsca na sali (1-100):</label>
+                <input type="number" name="numerMiejsca" min="1" max="100" required placeholder="Wybierz krzesło...">
+            </div>
+
+            <div class="finance-box" style="background-color: #ebf8ff; border-color: #bee3f8; color: #2b6cb0; text-align: center;">
+                Cena bazowa seansu: <span th:text="${#numbers.formatDecimal(screening.cenaBiletu, 1, 2, 'COMMA')}"></span> zł
+            </div>
+
+            <button type="submit" class="btn-buy" style="float: none; width: 100%; padding: 12px; border-radius: 6px;">
+                🎟️ Potwierdzam zakup i rezerwację places
+            </button>
+        </form>
+    </div>
+
+    <!-- Link anulowania -->
+    <a href="/repertuar" class="btn btn-back">← Rezygnuję, wróć do repertuaru</a>
+
 </body>
 </html>

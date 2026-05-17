@@ -1,0 +1,225 @@
+/* src/main/resources/static/css/style.css */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f9;
+    color: #2c3e50;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1, h2 {
+    color: #2c3e50;
+    text-align: center;
+}
+
+p {
+    color: #7f8c8d;
+    text-align: center;
+}
+
+/* Stylizacja kontenerów list */
+#seanse, .container {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    max-width: 800px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+ul {
+    list-shadow: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    list-style-type: none;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    transition: transform 0.2s;
+}
+
+li:hover {
+    transform: translateY(-2px);
+    border-color: #cbd5e1;
+}
+
+/* Uniwersalne, ładne przyciski i linki */
+.btn {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.9em;
+    transition: background-color 0.2s, transform 0.1s;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-buy {
+    background-color: #2ecc71;
+    color: white;
+    float: right;
+}
+
+.btn-buy:hover {
+    background-color: #27ae60;
+}
+
+.btn-soldout {
+    background-color: #e74c3c;
+    color: white;
+    float: right;
+    cursor: not-allowed;
+}
+
+.btn-back {
+    background-color: #95a5a6;
+    color: white;
+    margin-top: 20px;
+}
+
+.btn-back:hover {
+    background-color: #7f8c8d;
+}
+
+/* Małe elementy informacyjne */
+.info-muted {
+    color: #7f8c8d;
+    font-size: 0.85em;
+    display: block;
+    margin-top: 5px;
+}
+
+.price-tag {
+    color: #2c3e50;
+    font-size: 1.1em;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+/* Nowe style dla formularzy w pliku style.css */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+    color: #34495e;
+    margin-bottom: -5px;
+}
+
+input[type="number"],
+input[type="text"],
+input[type="datetime-local"],
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 1em;
+    box-sizing: border-box;
+    background-color: #fff;
+    color: #2c3e50;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+button[type="submit"] {
+    background-color: #3498db;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    height: 45px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button[type="submit"]:hover {
+    background-color: #2980b9;
+}
+
+/* Style sekcji administracyjnych */
+.admin-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #edf2f7;
+    align-items: center;
+}
+
+.btn-delete {
+    background-color: #e74c3c !important;
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: #c0392b !important;
+}
+
+.btn-edit {
+    background-color: #f39c12;
+    color: white;
+}
+
+.btn-edit:hover {
+    background-color: #d35400;
+}
+
+.finance-box {
+    margin-top: 12px;
+    padding: 12px;
+    background-color: #f0fff4;
+    border: 1px solid #c6f6d5;
+    border-radius: 6px;
+    color: #22543d;
+    font-weight: bold;
+}
+
+.tickets-list-box {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #f7fafc;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+}
+
+.tickets-list-box ul li {
+    margin-bottom: 5px;
+    padding: 5px 10px;
+    background-color: #fff;
+    border: 1px solid #edf2f7;
+}
+
+.error-box {
+    color: #721c24;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #f5c6cb;
+    border-radius: 6px;
+    background-color: #f8d7da;
+    width: 100%;
+    box-sizing: border-box;
+}

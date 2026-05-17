@@ -2,39 +2,52 @@
 <html lang="PL_pl" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Repertuar Kina</title>
+    <!-- OTO PODPIĘCIE WSPÓLNEGO PLIKU CSS (Zasada DRY) -->
+    <link rel="stylesheet" th:href="@{/style.css}">
 </head>
 <body>
+
     <h1>Aktualny Repertuar Kina</h1>
-    <p>Wybierz seans i kup bilet:</p>
+    <p>Wybierz interesujący Cię seans i zarezerwuj bilet online:</p>
 
     <div id="seanse">
         <ul>
-            <li th:each="screening : ${screenings}" style="margin-bottom: 15px; padding: 10px; border-bottom: 1px solid #ccc;">
+            <li th:each="screening : ${screenings}">
                 <div>
-                    Sala: <span th:text="${screening.numerSali}"></span> -
-                    Data: <span th:text="${#temporals.format(screening.dataIGodzina, 'dd.MM.yyyy HH:mm')}"></span> -
-                    Film: <strong th:text="${screening.movie.tytul}"></strong> <br>
+                    <!-- Szczegóły filmu i seansu -->
+                    <strong style="font-size: 1.3em; color: #2c3e50;" th:text="${screening.movie.tytul}"></strong>
+                    <div style="margin-top: 5px;">
+                        <span>Sala: <span th:text="${screening.numerSali}"></span></span> | 
+                        <span>Godzina: <span th:text="${#temporals.format(screening.dataIGodzina, 'dd.MM.yyyy HH:mm')}"></span></span>
+                    </div>
                     
-                    <small style="color: #666;">
+                    <span class="info-muted">
                         Dostępnych biletów: <span th:text="${screening.wolneMiejsca}"></span> / 100
-                    </small>
-                    Cena biletu od: <strong th:text="${#numbers.formatDecimal(screening.cenaBiletu, 1, 2, 'COMMA')} + ' zł'"></strong>
-                    <!-- Przycisk zakupu -->
+                    </span>
+                    
+                    <span class="price-tag">
+                        Cena od: <strong><span th:text="${#numbers.formatDecimal(screening.cenaBiletu, 1, 2, 'COMMA')}"></span> zł</strong>
+                    </span>
+
+                    <!-- Przycisk zakupu ujednolicony przez klasy CSS -->
                     <a th:if="${screening.wolneMiejsca > 0}" 
                        th:href="@{/bilety/kup/{id}(id=${screening.id})}" 
-                       style="font-weight: bold; color: green; margin-left: 10px;">
-                        [ Kup bilet ]
+                       class="btn btn-buy">
+                        Kup bilet
                     </a>
-                    <span th:if="${screening.wolneMiejsca == 0}" style="font-weight: bold; color: red; margin-left: 10px;">
-                        [ WYPRZEDANE ]
+                    
+                    <span th:if="${screening.wolneMiejsca == 0}" class="btn btn-soldout">
+                        WYPRZEDANE
                     </span>
                 </div>
             </li>
         </ul>
     </div>
 
-    <br>
-    <a href="/">Strona główna filmów</a>
+    <!-- Link powrotny jako ładny przycisk -->
+    <a href="/" class="btn btn-back">← Strona główna</a>
+
 </body>
 </html>
