@@ -13,6 +13,10 @@ public class Ticket {
 
     private int numerMiejsca;
 
+    private String typBiletu;
+
+    private double cenaZaplacona;
+
     @ManyToOne
     @JoinColumn(name = "screening_id")
     private Screening screening;
@@ -20,10 +24,28 @@ public class Ticket {
     public Ticket() {
     }
 
-    public Ticket(String imieNazwiskoKlienta, int numerMiejsca, Screening screening) {
+    public Ticket(String imieNazwiskoKlienta, int numerMiejsca, Screening screening, String typBiletu, double cenaZaplacona) {
         this.imieNazwiskoKlienta = imieNazwiskoKlienta;
         this.numerMiejsca = numerMiejsca;
         this.screening = screening;
+        this.typBiletu=typBiletu;
+        this.cenaZaplacona=cenaZaplacona;
+    }
+
+    public String getTypBiletu() {
+        return typBiletu;
+    }
+
+    public void setTypBiletu(String typBiletu) {
+        this.typBiletu = typBiletu;
+    }
+
+    public double getCenaZaplacona() {
+        return cenaZaplacona;
+    }
+
+    public void setCenaZaplacona(double cenaZaplacona) {
+        this.cenaZaplacona = cenaZaplacona;
     }
 
     public Long getId() {

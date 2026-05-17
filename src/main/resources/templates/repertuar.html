@@ -19,7 +19,7 @@
                     <small style="color: #666;">
                         Dostępnych biletów: <span th:text="${screening.wolneMiejsca}"></span> / 100
                     </small>
-                    Cena biletu: <strong th:text="${screening.cenaBiletu}"></strong> zł
+                    Cena biletu od: <strong th:text="${#numbers.formatDecimal(screening.cenaBiletu, 1, 2, 'COMMA')} + ' zł'"></strong>
                     <!-- Przycisk zakupu -->
                     <a th:if="${screening.wolneMiejsca > 0}" 
                        th:href="@{/bilety/kup/{id}(id=${screening.id})}" 

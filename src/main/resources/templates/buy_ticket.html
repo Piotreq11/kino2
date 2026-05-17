@@ -27,6 +27,16 @@
 
         Imię i Nazwisko: 
         <input type="text" name="imieNazwisko" required placeholder="Jan Kowalski"> <br><br>
+
+        <!-- Zmień wyświetlanie ceny seansu na formatowane: -->
+<p>Cena bazowa: <strong><span th:text="${#numbers.formatDecimal(screening.cenaBiletu, 1, 2, 'COMMA')}"></span> zł</strong> (Ulgowy -20%)</p>
+
+<!-- Wewnątrz formularza <form> dodaj select z wyborem typu biletu: -->
+Rodzaj biletu:
+<select name="typBiletu" required>
+    <option value="NORMALNY">Normalny (100% ceny)</option>
+    <option value="ULGOWY">Ulgowy (-20% zniżki)</option>
+</select> <br><br>
         
         Numer miejsca (1-100): 
         <input type="number" name="numerMiejsca" min="1" max="100" required> <br><br>

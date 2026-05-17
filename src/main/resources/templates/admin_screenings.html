@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kino - Seansy</title>
+    <title>Kino - Panel Administratora</title>
 </head>
 <body>
 
+    <h2>Dodaj nowy seans:</h2>
     <form action="/admin/seanse/add" method="post">
         Numer sali: <input type="number" name="numerSali" id="numerSali" required> <br>
         Data i godzina: <input type="datetime-local" name="dataGodzinaStr" required> <br>
@@ -21,62 +22,63 @@
     </form>
 
     <div id="seanse">
-        <h2>Seansy:</h2>
+        <h2>Zaplanowane seansy:</h2>
         <ul>
-            <li th:each="screening : ${screenings}" style="margin-bottom: 20px;">
+            <li th:each="screening : ${screenings}" style="margin-bottom: 25px; padding: 10px; border: 1px solid #ddd;">
+                
                 <!-- Główne informacje o seansie -->
-                <!-- Podmień główny blok informacji o seansie w screenings.html -->
-<div>
-    Sala: <span th:text="${screening.numerSali}"></span> -
-    Data: <span th:text="${#temporals.format(screening.dataIGodzina, 'dd.MM.yyyy HH:mm')}"></span> -
-    Film: <strong th:text="${screening.movie.tytul}"></strong> <br>
-    
-    <!-- Statystyka miejsc w sali -->
-    <small style="color: #666;">
-        Bilety: <span th:text="${screening.zajeteMiejsca}"></span> / 100 
-        (Dostępnych miejsc: <strong th:text="${screening.wolneMiejsca}"></strong>)
-    </small>
-    
-    <!-- WARUNEK: Jeśli są wolne miejsca (większe od 0), pokaż link do kupna -->
-    <a th:if="${screening.wolneMiejsca > 0}" 
-       th:href="@{/bilety/kup/{id}(id=${screening.id})}" 
-       style="font-weight: bold; color: green; margin-left: 10px;">
-        [ Kup bilet ]
-    </a>
-    
-    <!-- WARUNEK: W przeciwnym wypadku (gdy wolneMiejsca == 0), pokaż komunikat o braku biletów -->
-    <span th:if="${screening.wolneMiejsca == 0}" 
-          style="font-weight: bold; color: red; margin-left: 10px;">
-        [ WYPRZEDANE ]
-    </span>
-    <!-- Wklej to wewnątrz pętli wyświetlania seansów w admin_screenings.html -->
-<div style="margin-top: 5px; color: #2e7d32; font-weight: bold;">
-    Cena biletu: <span th:text="${screening.cenaBiletu}"></span> zł | 
-    Łączny przychód: <span th:text="${screening.calkowityZarobek}"></span> zł
-</div>
-</div>
-
-                <!-- Akcje managera (Usuń / Edytuj) -->
-                <div style="margin-top: 5px;">
-                    <form th:action="@{/seanse/delete/{id}(id=${screening.id})}" method="post" style="display:inline;">
-                        <button type="submit">Usuń seans</button>
-                    </form>
-                    <a th:href="@{/admin/seanse/edit/{id}(id=${screening.id})}" style="margin-left: 10px;">Edytuj seans</a>
+                <div>
+                    Sala: <span th:text="${screening.numerSali}"></span> -
+                    Data: <span th:text="${#temporals.format(screening.dataIGodzina, 'dd.MM.yyyy HH:mm')}"></span> -
+                    Film: <strong th:text="${screening.movie.tytul}"></strong> <br>
+                    
+                    <small style="color: #666;">
+                        Bilety: <span th:text="${screening.zajeteMiejsca}"></span> / 100 
+                        (Dostępnych miejsc: <strong th:text="${screening.wolneMiejsca}"></strong>)
+                    </small>
+                    
+                    <!-- Warunki przycisku zakupu (dla testu z poziomu admina) -->
+                    <a th:if="${screening.wolneMiejsca > 0}" 
+                       th:href="@{/bilety/kup/{id}(id=${screening.id})}" 
+                       style="font-weight: bold; color: green; margin-left: 10px;">
+                        [ Kup bilet ]
+                    </a>
+                    <span th:if="${screening.wolneMiejsca == 0}" style="font-weight: bold; color: red; margin-left: 10px;">
+                        [ WYPRZEDANE ]
+                    </span>
                 </div>
 
-                <!-- Podgląd kupionych biletów -->
+                <!-- Finanse seansu -->
+                <div style="margin-top: 5px; color: #2e7d32; font-weight: bold;">
+                    Cena bazowa seansu: <span th:text="${#numbers.formatDecimal(screening.cenaBiletu, 1, 2, 'COMMA')}"></span> zł | 
+                    Łączny przychód: <span th:text="${#numbers.formatDecimal(screening.calkowityZarobek, 1, 2, 'COMMA')}"></span> zł
+                </div>
+
+                <!-- Lista sprzedanych biletów (Szczegóły dla Managera) -->
                 <div style="margin-top: 10px; margin-left: 20px; font-size: 0.9em; color: #555;">
-                    <strong>Sprzedane bilety:</strong>
+                    <strong>Sprzedane bilety na ten seans:</strong>
                     <span th:if="${screening.bilety.isEmpty()}">Brak sprzedanych biletów.</span>
 
                     <ul th:if="${!screening.bilety.isEmpty()}">
                         <li th:each="bilet : ${screening.bilety}">
-                            Miejsce <span th:text="${bilet.numerMiejsca}"></span>:
-                            <span th:text="${bilet.imieNazwiskoKlienta}"></span>
+                            Miejsce <span th:text="${bilet.numerMiejsca}"></span>: 
+                            <span th:text="${bilet.imieNazwiskoKlienta}"></span> 
+                            <!-- Sprawdzenie czu parametry nie są nullami, żeby nie psuć strony -->
+                            <span th:if="${bilet.typBiletu != null}">
+                                (<span th:text="${bilet.typBiletu}"></span> - 
+                                <span th:text="${#numbers.formatDecimal(bilet.cenaZaplacona, 1, 2, 'COMMA')}"></span> zł)
+                            </span>
                         </li>
                     </ul>
                 </div>
-                <hr>
+
+                <!-- Akcje managera -->
+                <div style="margin-top: 10px; background-color: #f9f9f9; padding: 5px;">
+                    <form th:action="@{/admin/seanse/delete/{id}(id=${screening.id})}" method="post" style="display:inline;">
+                        <button type="submit" style="color: red;">Usuń seans</button>
+                    </form>
+                    <a th:href="@{/admin/seanse/edit/{id}(id=${screening.id})}" style="margin-left: 10px;">Edytuj seans</a>
+                </div>
             </li>
         </ul>
     </div>

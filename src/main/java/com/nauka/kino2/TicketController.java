@@ -25,12 +25,15 @@ public class TicketController {
     }
 
     @PostMapping("/kup")
-    public String buyTicket(@RequestParam String imieNazwisko, @RequestParam int numerMiejsca, @RequestParam Long screeningId, Model model){
+    public String buyTicket(@RequestParam String imieNazwisko, @RequestParam int numerMiejsca, @RequestParam Long screeningId, Model model,@RequestParam String typBiletu){
 
         Screening screening = screeningService.getScreeningById(screeningId);
 
         try {
-            Ticket newTicket = new Ticket(imieNazwisko, numerMiejsca, screening);
+            double cenaKoncowa=screening.getCenaBiletu();
+            if("ULGOWY".equals(typBiletu))
+                cenaKoncowa*=0.8d;
+            Ticket newTicket = new Ticket(imieNazwisko, numerMiejsca, screening, typBiletu ,cenaKoncowa);
             ticketService.buyTicket(newTicket); // Tutaj może wyskoczyć błąd
             return "redirect:/repertuar";
 

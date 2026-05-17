@@ -37,7 +37,7 @@ public class Screening {
     }
 
     public double getCalkowityZarobek(){
-        return getZajeteMiejsca()*this.cenaBiletu;
+        return this.bilety.stream().mapToDouble(Ticket::getCenaZaplacona).sum();
     }
 
     public Long getId() {
