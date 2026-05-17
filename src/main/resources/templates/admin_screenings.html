@@ -11,7 +11,9 @@
 
     <h1>Panel Zarządzania Seanse</h1>
     <p>Menedżerze, tutaj możesz dodawać nowe wydarzenia oraz kontrolować finanse kina.</p>
-
+<form th:action="@{/logout}" method="post" style="display: inline;">
+    <button type="submit" class="btn btn-back" style="background-color: #7f8c8d;">Wyloguj się</button>
+</form>
     <!-- Komunikat o błędnej dacie dla admina -->
     <div th:if="${error}" class="error-box">
         ⚠️ Błąd: <span th:text="${error}"></span>
