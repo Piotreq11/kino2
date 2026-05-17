@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 
 @Controller
-@RequestMapping("/seanse")
+//@RequestMapping("/seanse")
 public class ScreeningController {
 
     private final ScreeningService screeningService;
@@ -34,7 +34,7 @@ public class ScreeningController {
      */
 
     //strona glowna panelu admina
-    @GetMapping("/adnub/seanse")
+    @GetMapping("/admin/seanse")
     public String adminIndex(Model model) {
         model.addAttribute("screenings", screeningService.getAllScreenings());
         model.addAttribute("movies", movieService.getAllMovies());

@@ -78,7 +78,7 @@ public class Screening {
     }
 
     public int getWolneMiejsca(){
-        int pojemnoscSali=3;
+        int pojemnoscSali=100;
         return pojemnoscSali-getZajeteMiejsca();
     }
 }
