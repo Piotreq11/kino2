@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="PL_pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kino - Seansy</title>
+</head>
+<body>
+
+    <!-- TUTAJ: Zmiana adresu action na /seanse/add -->
+    <form action="/seanse/add" method="post">
+        Numer sali: <input type="number" name="numerSali" id="numerSali" required> <br>
+        Data i godzina: <input type="datetime-local" name="dataIGodzinaStr" required> <br>
+        Film: 
+        <select name="movieId" required>
+            <option th:each="film : ${movies}"
+                    th:value="${film.id}"
+                    th:text="${film.tytul}"></option>
+        </select> <br>
+        <button type="submit">Dodaj seans</button>
+    </form>
+
+    <div id="seanse">
+        <h2>Seansy:</h2>
+        <ul>
+            <li th:each="screening : ${screenings}">
+                Sala: <span th:text="${screening.numerSali}"></span> -
+                <!-- Zmiana na dataIGodzina (tak jak w encji Screening.java) -->
+                Data: <span th:text="${#temporals.format(screening.dataIGodzina, 'dd.MM.yyyy HH:mm')}"></span> -
+                Film: <span th:text="${screening.movie.tytul}"></span>
+            </li>
+        </ul>
+    </div>
+
+    <br>
+    <a href="/">Wróć do bazy filmów</a>
+</body>
+</html>
