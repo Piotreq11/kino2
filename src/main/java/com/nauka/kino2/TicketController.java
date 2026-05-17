@@ -32,7 +32,7 @@ public class TicketController {
         try {
             Ticket newTicket = new Ticket(imieNazwisko, numerMiejsca, screening);
             ticketService.buyTicket(newTicket); // Tutaj może wyskoczyć błąd
-            return "redirect:/seanse";
+            return "redirect:/repertuar";
 
         } catch (IllegalStateException e) {
             // Jeśli złapiemy błąd z serwisu, wracamy do formularza i przekazujemy komunikat

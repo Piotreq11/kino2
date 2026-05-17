@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="PL_pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Repertuar Kina</title>
+</head>
+<body>
+    <h1>Aktualny Repertuar Kina</h1>
+    <p>Wybierz seans i kup bilet:</p>
+
+    <div id="seanse">
+        <ul>
+            <li th:each="screening : ${screenings}" style="margin-bottom: 15px; padding: 10px; border-bottom: 1px solid #ccc;">
+                <div>
+                    Sala: <span th:text="${screening.numerSali}"></span> -
+                    Data: <span th:text="${#temporals.format(screening.dataIGodzina, 'dd.MM.yyyy HH:mm')}"></span> -
+                    Film: <strong th:text="${screening.movie.tytul}"></strong> <br>
+                    
+                    <small style="color: #666;">
+                        Dostępnych biletów: <span th:text="${screening.wolneMiejsca}"></span> / 100
+                    </small>
+                    
+                    <!-- Przycisk zakupu -->
+                    <a th:if="${screening.wolneMiejsca > 0}" 
+                       th:href="@{/bilety/kup/{id}(id=${screening.id})}" 
+                       style="font-weight: bold; color: green; margin-left: 10px;">
+                        [ Kup bilet ]
+                    </a>
+                    <span th:if="${screening.wolneMiejsca == 0}" style="font-weight: bold; color: red; margin-left: 10px;">
+                        [ WYPRZEDANE ]
+                    </span>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <br>
+    <a href="/">Strona główna filmów</a>
+</body>
+</html>

@@ -7,7 +7,7 @@
 <body>
 <h1>Edycja seansu</h1>
 
-<form th:action="@{/seanse/edit/{id}(id=${screening.id})}" method="post">
+<form th:action="@{/admin/seanse/edit/{id}(id=${screening.id})}" method="post">
     Numer sali:
     <input type="number" name="numerSali" th:value="${screening.numerSali}" required> <br>
 
@@ -26,6 +26,6 @@
 </form>
 
 <br>
-<a href="/seanse">Anuluj i wróć</a>
+<a href="/admin/seanse">Anuluj i wróć</a>
 </body>
 </html>

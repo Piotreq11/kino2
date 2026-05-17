@@ -72,4 +72,13 @@ public class Screening {
     public void setBilety(List<Ticket> bilety){
         this.bilety=bilety;
     }
+
+    public int getZajeteMiejsca(){
+        return this.bilety.size();
+    }
+
+    public int getWolneMiejsca(){
+        int pojemnoscSali=3;
+        return pojemnoscSali-getZajeteMiejsca();
+    }
 }

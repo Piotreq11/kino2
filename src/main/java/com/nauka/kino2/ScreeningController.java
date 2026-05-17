@@ -1,5 +1,6 @@
 package com.nauka.kino2;
 
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,32 +19,50 @@ public class ScreeningController {
         this.movieService = movieService;
     }
 
-    @GetMapping
-    public String index(Model model) {
+    /*
+    strefa klienta
+     */
+
+    @GetMapping("/repertuar")
+    public String ShowRepertuar(Model model) {
+        model.addAttribute("screenings", screeningService.getAllScreenings());
+        return "repertuar";
+    }
+
+    /*
+    Strefa Managera
+     */
+
+    //strona glowna panelu admina
+    @GetMapping("/adnub/seanse")
+    public String adminIndex(Model model) {
         model.addAttribute("screenings", screeningService.getAllScreenings());
         model.addAttribute("movies", movieService.getAllMovies());
-        return "screenings";
+        return "admin_screenings";
     }
 
-    @PostMapping("/add")
-    public String addScreening(@RequestParam int numerSali, @RequestParam String dataIGodzinaStr, @RequestParam Long movieId) {
+    //dodawanie seansu przez admina
+
+    @PostMapping("/admin/seanse/add")
+    public String addScreening(@RequestParam int numerSali, @RequestParam String dataGodzinaStr, @RequestParam Long movieId) {
         Movie movie = movieService.getMovieById(movieId);
-
-        LocalDateTime dataiGodzina = LocalDateTime.parse(dataIGodzinaStr);
-
-        Screening screening = new Screening(numerSali, dataiGodzina, movie);
+        LocalDateTime dataIGodzina = LocalDateTime.parse(dataGodzinaStr);
+        Screening screening = new Screening(numerSali, dataIGodzina, movie);
         screeningService.addScreening(screening);
-
-        return "redirect:/seanse";
+        return "redirect:/admin/seanse";
     }
 
-    @PostMapping("/delete/{id}")
+    //usuwanie seansu przez admina
+
+    @PostMapping("/admin/seanse/delete/{id}")
     public String deleteScreening(@PathVariable Long id) {
         screeningService.deleteScreening(id);
-        return "redirect:/seanse";
+        return "redirect:/admin/seanse";
     }
 
-    @GetMapping("/edit/{id}")
+    // edycja seansu przez admina
+
+    @GetMapping("/admin/seanse/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         Screening screening = screeningService.getScreeningById(id);
         model.addAttribute("screening", screening);
@@ -51,8 +70,10 @@ public class ScreeningController {
         return "edit_screening";
     }
 
-    @PostMapping("/edit/{id}")
-    public String updateScreening(@PathVariable Long id, @RequestParam int numerSali, @RequestParam String dataGodzinaStr, @RequestParam Long movieId){
+    //zapisanie zmian po edycji
+
+    @PostMapping("/admin/seanse/edit/{id}")
+    public String updateScreening(@PathVariable Long id, @RequestParam int numerSali, @RequestParam String dataGodzinaStr, @RequestParam Long movieId) {
         Screening screening = screeningService.getScreeningById(id);
         Movie movie = movieService.getMovieById(movieId);
 
@@ -61,9 +82,14 @@ public class ScreeningController {
         screening.setMovie(movie);
 
         screeningService.saveScreening(screening);
+        return "redirect:/admin/seanse";
+    }
 
-        return "redirect:/seanse";
-
+    @GetMapping
+    public String index(Model model) {
+        model.addAttribute("screenings", screeningService.getAllScreenings());
+        model.addAttribute("movies", movieService.getAllMovies());
+        return "screenings";
     }
 
 }

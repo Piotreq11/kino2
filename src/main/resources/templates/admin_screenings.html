@@ -7,7 +7,7 @@
 </head>
 <body>
 
-    <form action="/seanse/add" method="post">
+    <form action="/admin/seanse/add" method="post">
         Numer sali: <input type="number" name="numerSali" id="numerSali" required> <br>
         Data i godzina: <input type="datetime-local" name="dataGodzinaStr" required> <br>
         Film: 
@@ -24,23 +24,38 @@
         <ul>
             <li th:each="screening : ${screenings}" style="margin-bottom: 20px;">
                 <!-- Główne informacje o seansie -->
-                <div>
-                    Sala: <span th:text="${screening.numerSali}"></span> -
-                    Data: <span th:text="${#temporals.format(screening.dataIGodzina, 'dd.MM.yyyy HH:mm')}"></span> -
-                    Film: <strong th:text="${screening.movie.tytul}"></strong>
-                    
-                    <!-- Link do kupna biletu -->
-                    <a th:href="@{/bilety/kup/{id}(id=${screening.id})}" style="font-weight: bold; color: green; margin-left: 10px;">
-                        [ Kup bilet ]
-                    </a>
-                </div>
+                <!-- Podmień główny blok informacji o seansie w screenings.html -->
+<div>
+    Sala: <span th:text="${screening.numerSali}"></span> -
+    Data: <span th:text="${#temporals.format(screening.dataIGodzina, 'dd.MM.yyyy HH:mm')}"></span> -
+    Film: <strong th:text="${screening.movie.tytul}"></strong> <br>
+    
+    <!-- Statystyka miejsc w sali -->
+    <small style="color: #666;">
+        Bilety: <span th:text="${screening.zajeteMiejsca}"></span> / 100 
+        (Dostępnych miejsc: <strong th:text="${screening.wolneMiejsca}"></strong>)
+    </small>
+    
+    <!-- WARUNEK: Jeśli są wolne miejsca (większe od 0), pokaż link do kupna -->
+    <a th:if="${screening.wolneMiejsca > 0}" 
+       th:href="@{/bilety/kup/{id}(id=${screening.id})}" 
+       style="font-weight: bold; color: green; margin-left: 10px;">
+        [ Kup bilet ]
+    </a>
+    
+    <!-- WARUNEK: W przeciwnym wypadku (gdy wolneMiejsca == 0), pokaż komunikat o braku biletów -->
+    <span th:if="${screening.wolneMiejsca == 0}" 
+          style="font-weight: bold; color: red; margin-left: 10px;">
+        [ WYPRZEDANE ]
+    </span>
+</div>
 
                 <!-- Akcje managera (Usuń / Edytuj) -->
                 <div style="margin-top: 5px;">
                     <form th:action="@{/seanse/delete/{id}(id=${screening.id})}" method="post" style="display:inline;">
                         <button type="submit">Usuń seans</button>
                     </form>
-                    <a th:href="@{/seanse/edit/{id}(id=${screening.id})}" style="margin-left: 10px;">Edytuj seans</a>
+                    <a th:href="@{/admin/seanse/edit/{id}(id=${screening.id})}" style="margin-left: 10px;">Edytuj seans</a>
                 </div>
 
                 <!-- Podgląd kupionych biletów -->
