@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="PL_pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kino - Rejestracja Klienta</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+
+<h1>Dołącz do Klubu Kina</h1>
+<p>Załóż darmowe konto, aby zbierać punkty i zyskać 5% rabatu na każdy bilet!</p>
+
+<div th:if="${error}" class="error-box">
+    ⚠️ <span th:text="${error}"></span>
+</div>
+
+<div class="container">
+    <h2>Formularz Rejestracji</h2>
+    <form th:action="@{/register}" th:object="${user}" method="post">
+
+        <div>
+            <label>Adres E-mail (Twój Login):</label>
+            <input type="text" th:field="*{username}" required placeholder="np. jan.kowalski@gmail.com">
+        </div>
+
+        <div>
+            <label>Hasło:</label>
+            <input type="password" th:field="*{password}" required placeholder="Wpisz bezpieczne hasło">
+        </div>
+
+        <div>
+            <label>Imię:</label>
+            <input type="text" th:field="*{imie}" required placeholder="Jan">
+        </div>
+
+        <div>
+            <label>Nazwisko:</label>
+            <input type="text" th:field="*{nazwisko}" required placeholder="Kowalski">
+        </div>
+
+        <button type="submit">Załóż konto i odbierz rabat</button>
+    </form>
+</div>
+
+<p style="text-align: center; margin-top: 20px;">
+    Masz już konto? <a href="/login" style="color: #3498db; font-weight: bold;">Zaloguj się</a>
+</p>
+<a href="/" class="btn btn-back">← Strona główna</a>
+
+</body>
+</html>

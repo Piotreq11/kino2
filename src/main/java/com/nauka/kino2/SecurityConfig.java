@@ -2,39 +2,44 @@ package com.nauka.kino2;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-
-import static org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers.matchers;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    // BRAK KONSTRUKTORA I ZMIENNEJ KLASY – to rozwiązuje błąd startu aplikacji!
+
     @Bean
-    public UserDetailsService userDetailsService(){
-        UserDetails admin = User.withDefaultPasswordEncoder().username("admin").password("admin123").roles("ADMIN").build();
-        return  new InMemoryUserDetailsManager(admin);
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    // Wstrzykujemy CustomUserDetailsService bezpośrednio do metody przez parametr!
+    @Bean
+    public AuthenticationManager authenticationManager(CustomUserDetailsService userDetailsService) {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return new ProviderManager(authProvider);
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        // Strony zaczynające się od /admin/ wymagają roli ADMIN
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        // Cała reszta (strona główna, repertuar, kupno biletów, pliki CSS) jest otwarta dla każdego
-                        .requestMatchers("/", "/repertuar", "/bilety/**", "/style.css").permitAll()
+                        .requestMatchers("/", "/repertuar", "/bilety/**", "/css/**", "/style.css", "/register", "/login").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(login -> login
-                        // Używamy domyślnego formularza logowania dostarczonego przez Springa
-                        .defaultSuccessUrl("/admin/seanse", true)
+                        .defaultSuccessUrl("/", true)
                         .permitAll()
                 )
                 .logout(logout -> logout

@@ -1,5 +1,6 @@
 package com.nauka.kino2;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,15 +26,22 @@ public class TicketController {
     }
 
     @PostMapping("/kup")
-    public String buyTicket(@RequestParam String imieNazwisko, @RequestParam int numerMiejsca, @RequestParam Long screeningId, Model model,@RequestParam String typBiletu){
+    public String buyTicket(@RequestParam String imieNazwisko, @RequestParam int numerMiejsca, @RequestParam Long screeningId, Model model,@RequestParam String typBiletu, Authentication authentication){
 
         Screening screening = screeningService.getScreeningById(screeningId);
+        boolean czyZalogowany = false;
+
+        if(authentication !=null && authentication.isAuthenticated())
+            czyZalogowany=true;
 
         try {
             double cenaKoncowa=screening.getCenaBiletu();
+
             if("ULGOWY".equals(typBiletu))
                 cenaKoncowa*=0.8d;
-            Ticket newTicket = new Ticket(imieNazwisko, numerMiejsca, screening, typBiletu ,cenaKoncowa);
+            if(czyZalogowany)
+                cenaKoncowa*=0.95d;
+            Ticket newTicket = new Ticket(authentication.getName(), numerMiejsca, screening, typBiletu ,cenaKoncowa);
             ticketService.buyTicket(newTicket); // Tutaj może wyskoczyć błąd
             return "redirect:/repertuar";
 
